@@ -1,0 +1,94 @@
+# 5 star probability is 0.006, 0.06 at soft pity
+# history
+
+import random
+
+possible_drops = ['3 star', '4 star', '5 star']
+
+soft_pity = 75  # number of rolls at which 5 star probability increases
+hard_pity = 90  # number of rolls at which a 5 star is guaranteed
+number_of_rolls = 0
+history = []
+
+
+def record_history():
+    history.append(drop_type)
+
+
+def reset_history():
+    history.clear()
+
+
+# function determining what happens when a certain rarity is rolled
+def roll(five_star_probability, four_star_probability):
+    if random.random() <= five_star_probability:
+        print(possible_drops[2])
+        drop = '5 star'
+    elif random.random() <= four_star_probability:
+        print(possible_drops[1])
+        drop = '4 star'
+    else:
+        print(possible_drops[0])
+        drop = '3 star'
+    return drop
+
+# rerun_choice to repeat the program
+rerun_choice = ''
+while rerun_choice != 'n':
+    roll_choice = ''
+    while roll_choice != 'n':
+        roll_choice = input("do you want to roll?(y/n): ")
+        if roll_choice == 'n':
+            break
+        if number_of_rolls < soft_pity:
+            drop_type = roll(0.006, 0.051)
+            if drop_type == '5 star':
+                number_of_rolls = 0
+            else:
+                number_of_rolls += 1
+            print(number_of_rolls)
+        elif soft_pity <= number_of_rolls < hard_pity:
+            drop_type = roll(0.06, 0.51)
+            if drop_type == '5 star':
+                number_of_rolls = 0
+            else:
+                number_of_rolls += 1
+            print(number_of_rolls)
+        else:
+            roll(1, 0)
+            number_of_rolls = 0
+            print(number_of_rolls)
+        record_history()
+
+    # choice to view history
+    history_choice = ''
+    while history_choice != 'n':
+        history_choice = input("do you want to see your history?(y/n): ")
+        if history_choice == 'n':
+            break
+        if history_choice == 'y':
+            print(history)
+            break
+        else:
+            print("invalid answer")
+
+    # choice to reset history
+    reset_choice = ''
+    while reset_choice != 'n':
+        reset_choice = input("do you want to reset your history?(y/n): ")
+        if reset_choice == 'n':
+            break
+        if reset_choice == 'y':
+            reset_history()
+            break
+        else:
+            print("invalid answer")
+
+    # choice to rerun the program
+    rerun_choice = input("would you like to rerun the program?(y/n): ")
+    if rerun_choice == 'n':
+        break
+    elif rerun_choice != 'n' and rerun_choice != 'y':
+        print("invalid answer")
+
+
